@@ -1,0 +1,8 @@
+TASK.md
+RESULT.md
+.env
+cache/
+data/raw/
+__pycache__/
+.venv/
+.freebuff/
