@@ -23,7 +23,6 @@ from typing import Sequence
 
 import numpy as np
 from PIL import Image
-from pydantic import ValidationError
 
 from salvage.schemas import Part
 from salvage.segment.backends import Detection, SegmentBackend
@@ -77,7 +76,7 @@ def segment(
         raw = detector.detect(
             path.read_bytes(), prompts=use_prompts, cache_dir=cache_dir
         )
-    except ValidationError:
+    except Exception:  # noqa: BLE001 - a failed backend call returns [], never crashes
         raw = None
     detections = raw if raw is not None else []
     detections = _clean(detections, width, height)
