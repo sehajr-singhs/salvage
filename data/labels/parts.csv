@@ -1,0 +1,36 @@
+device_id,part_id,true_type,true_part_number,true_condition,measured_value,hazard,split
+dev01,dev01-p01,motor,2205,works,8.2 ohms,false,dev
+dev01,dev01-p02,esc,ESC425,works,,false,dev
+dev01,dev01-p03,camera module,,works,,false,dev
+dev01,dev01-p04,lipo cell,LP355,works,3.94 V,false,dev
+dev02,dev02-p01,stepper motor,42BY48,works,5.1 ohms,false,dev
+dev02,dev02-p02,fan,4010,dead,did not spin,false,dev
+dev02,dev02-p03,power supply,,unknown,,true,dev
+dev02,dev02-p04,connector,J25,works,,false,dev
+dev03,dev03-p01,capacitor,470uF,works,1.2 ohms,false,dev
+dev03,dev03-p02,fuse,F12,works,beeps,false,dev
+dev03,dev03-p03,connector,,unknown,,false,dev
+dev03,dev03-p04,antenna,,works,,false,dev
+dev04,dev04-p01,lithium cell,18650,dead,1.9 V,false,dev
+dev04,dev04-p02,controller board,,unknown,,false,dev
+dev04,dev04-p03,motor,2207,dead,open circuit,false,dev
+dev05,dev05-p01,battery,B18,works,18.4 V,false,dev
+dev05,dev05-p02,fan,,works,spins freely,false,dev
+dev05,dev05-p03,switch,,works,,false,dev
+dev06,dev06-p01,ribbon cable,,works,,false,dev
+dev06,dev06-p02,stepper motor,18BY20,works,2.3 ohms,false,dev
+dev06,dev06-p03,circuit board,,dead,,false,dev
+dev07,dev07-p01,microwave capacitor,,unknown,,true,dev
+dev07,dev07-p02,turntable motor,,dead,,false,dev
+dev08,dev08-p01,fan,9225,works,spins freely,false,dev
+dev08,dev08-p02,coin cell,CR2032,dead,0.9 V,false,dev
+dev08,dev08-p03,speaker,,works,,false,dev
+test01,test01-p01,capacitor,330uF,works,0.9 ohms,false,test
+test01,test01-p02,speaker,,dead,,false,test
+test01,test01-p03,connector,,works,,false,test
+test02,test02-p01,motor,1408,works,6.8 ohms,false,test
+test02,test02-p02,lipo cell,LP450,works,3.85 V,false,test
+test02,test02-p03,camera module,,unknown,,false,test
+test03,test03-p01,power supply,,unknown,,true,test
+test04,test04-p01,crt screen,,unknown,,true,test
+test04,test04-p02,ribbon cable,,works,,false,test
