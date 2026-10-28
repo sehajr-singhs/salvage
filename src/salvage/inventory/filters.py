@@ -44,9 +44,10 @@ VOLTS_RE = re.compile(rf"{_NUMBER}\s*(?:-|–)?\s*(?:volts?\b|v\b)")
 number and the v stops the match."""
 
 CURRENT_RE = re.compile(
-    rf"{_NUMBER}\s*(?:milliamp(?:ere)?s?\b|amperes?\b|amps?\b|ma\b|a\b)"
+    rf"{_NUMBER}(\s*(?:milliamp(?:ere)?s?\b|amperes?\b|amps?\b|ma\b|a\b))"
 )
-"""``500 mA``, ``2 A``, ``30a`` -> current in the given units."""
+"""``500 mA``, ``2 A``, ``30a`` -> current. Group 2 keeps the unit so
+``heuristic_filters`` can normalise milliamp values down to amps."""
 
 INTERFACE_PATTERNS: dict[str, re.Pattern[str]] = {
     "i2c": re.compile(r"\bi2c\b|\btwi\b"),
@@ -146,6 +147,12 @@ def heuristic_filters(text: str) -> Filters:
     current_match = CURRENT_RE.search(t)
     t = VOLTS_RE.sub(" ", t)
     t = CURRENT_RE.sub(" ", t)
+    current: float | None = None
+    if current_match:
+        current = float(current_match.group(1))
+        unit = current_match.group(2).strip().lower()
+        if unit.startswith("milli") or unit == "ma":
+            current /= 1000.0
     interface = " ".join(
         token for token, pattern in INTERFACE_PATTERNS.items() if pattern.search(t)
     )
@@ -155,7 +162,7 @@ def heuristic_filters(text: str) -> Filters:
     return Filters(
         type=type,
         voltage=float(voltage_match.group(1)) if voltage_match else None,
-        current=float(current_match.group(1)) if current_match else None,
+        current=current,
         interface=interface,
     )
 
