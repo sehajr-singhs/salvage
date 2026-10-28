@@ -15,6 +15,12 @@ the gate re-grades; state changes print as ``BEFORE -> AFTER``.
 which device to open and which part to pull, VERIFIED first, and falls
 back to static household-source advice when nothing is remembered yet.
 
+``readings_provider`` is the third injection point next to ``prompter``
+and ``scan_backend``: tests and demos can hand in the exact readings the
+mock swarm was scripted to say, instead of the keyless default mock
+reader, while the keyed machine still gets the real 03 readers when
+nothing is injected.
+
 Exit codes: 0 on a scan (even a soft one with advice), 1 when nothing
 could be scanned at all (``ok=False``). No key is ever read here —
 providers come from ``salvage.config``, and with none set everything
@@ -102,6 +108,7 @@ def cmd_scan(
     *,
     prompter: Any | None = None,
     scan_backend: Any | None = None,
+    readings_provider: Any | None = None,
 ) -> int:
     """`scan`: the one command, then (optionally) the measurement dialogue."""
     inventory = None if args.no_remember else Inventory(args.db)
@@ -113,6 +120,7 @@ def cmd_scan(
             data_root=args.data_root,
             inventory=inventory,
             cache_dir=None,
+            readings_provider=readings_provider,
         )
     except FileNotFoundError as exc:
         print(f"scan failed: {exc}")
@@ -177,14 +185,21 @@ def main(
     *,
     prompter: Any | None = None,
     scan_backend: Any | None = None,
+    readings_provider: Any | None = None,
 ) -> int:
-    """Parse argv and dispatch; ``prompter``/``scan_backend`` are injection
-    points for tests (console text input / auto-selection are the defaults).
+    """Parse argv and dispatch; ``prompter``/``scan_backend``/
+    ``readings_provider`` are injection points for tests (console text
+    input, auto-selection, and the keyless mock reader are the defaults).
     """
     parser = _build_parser()
     args = parser.parse_args(argv)
     if args.command == "scan":
-        return cmd_scan(args, prompter=prompter, scan_backend=scan_backend)
+        return cmd_scan(
+            args,
+            prompter=prompter,
+            scan_backend=scan_backend,
+            readings_provider=readings_provider,
+        )
     return cmd_need(args)
 
 

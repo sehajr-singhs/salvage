@@ -185,6 +185,11 @@ def run_device(
         ok=True,
         device_name=resolved_name,
         measurement=(measurement or None),
+        readings_mode=(
+            "injected readings provider"
+            if readings_provider is not None
+            else READINGS_MODE
+        ),
         photo_path=str(copy_path),
         overlay_path=str(overlay_path),
         parts=parts,
@@ -220,6 +225,7 @@ def apply_measurements(
         message=scan.message,
         device_name=scan.device_name,
         measurement=scan.measurement,
+        readings_mode=scan.readings_mode,
         photo_path=scan.photo_path,
         overlay_path=scan.overlay_path,
         parts=list(scan.parts),

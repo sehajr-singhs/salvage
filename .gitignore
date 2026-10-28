@@ -3,6 +3,11 @@ RESULT.md
 .env
 cache/
 data/raw/
+data/scan/
+data/crops/
+data/masks/
+data/uploads/
+data/inventory.db
 __pycache__/
 .venv/
 .freebuff/

@@ -16,6 +16,9 @@ dependencies = [
     "numpy>=1.26",
     "pytest>=8.0",
     "python-dotenv>=1.0",
+    "fastapi>=0.110",
+    "python-multipart>=0.0.9",
+    "uvicorn>=0.29",
 ]
 
 [project.optional-dependencies]
