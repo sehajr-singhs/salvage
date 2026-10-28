@@ -1,0 +1,230 @@
+/* SALVAGE demo surface (brief 06): pure black and white, one amber accent.
+   Spec: bg #000, text #FFF, secondary #8A8A8A, hairlines #2A2A2A; Inter
+   Tight headings (uppercase, tracked) and JetBrains Mono for data from
+   Google Fonts; a faint 8 px dot grid; hard cuts, no fades anywhere. */
+
+:root {
+  --bg: #000000;
+  --ink: #FFFFFF;
+  --ink-2: #8A8A8A;
+  --hairline: #2A2A2A;
+  --hazard: #B4914B; /* muted amber: the only accent */
+  --mono: "JetBrains Mono", monospace;
+  --head: "Inter Tight", sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  background-color: var(--bg);
+  background-image: radial-gradient(#181818 1px, transparent 1px);
+  background-size: 8px 8px;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+h1 {
+  font-family: var(--head);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-family: var(--head);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.bar-sub, .mode, .count {
+  color: var(--ink-2);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+main {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 16px 16px 32px;
+}
+
+.panel {
+  border: 1px solid var(--hairline);
+  padding: 14px;
+  margin-top: 16px;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+/* buttons: hairline boxes, hard states, no hover fade */
+.btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--ink);
+  padding: 7px 12px;
+  cursor: pointer;
+}
+.btn:hover { background: var(--ink); color: var(--bg); }
+.btn:active { background: var(--ink-2); color: var(--bg); }
+
+#file-input { display: none; }
+
+.viewer {
+  position: relative;
+  min-height: 220px;
+  border: 1px solid var(--hairline);
+  overflow: hidden;
+}
+
+.viewer-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-2);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 24px;
+}
+
+#overlay-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+#label-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* leader-line callouts, engineering-drawing style */
+.callout {
+  position: absolute;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--hairline);
+  padding: 1px 6px;
+  white-space: nowrap;
+}
+.callout.hazard { color: var(--hazard); border-color: var(--hazard); }
+
+.part {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 14px;
+  padding: 10px 2px;
+  border-top: 1px solid var(--hairline);
+  list-style: none;
+}
+.part:first-child { border-top: none; }
+
+.part-id { color: var(--ink-2); font-size: 11px; }
+.part-name {
+  font-family: var(--head);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.chip {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border: 1px solid var(--ink);
+  padding: 2px 8px;
+}
+.chip.NEEDS_MEASUREMENT { color: var(--ink-2); border-color: var(--ink-2); }
+.chip.ABSTAIN { color: var(--ink-2); border-style: dashed; }
+.chip.HAZARD { color: var(--hazard); border-color: var(--hazard); }
+
+.reasons { width: 100%; color: var(--ink-2); font-size: 12px; }
+.ask {
+  width: 100%;
+  color: #FFC46B;
+  font-size: 12px;
+}
+.ask::before { content: "METER: "; color: var(--ink-2); letter-spacing: 0.16em; }
+
+#search-form {
+  display: flex;
+  gap: 8px;
+}
+#search-input {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--hairline);
+  padding: 8px 10px;
+}
+#search-input:focus { border-color: var(--ink); outline: none; }
+
+.result {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  align-items: baseline;
+  padding: 10px 2px;
+  border-top: 1px solid var(--hairline);
+  list-style: none;
+}
+.result-topic { color: var(--ink-2); font-size: 11px; }
+.result-device {
+  font-family: var(--head);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.result .where { width: 100%; color: var(--ink-2); font-size: 12px; }
+
+.empty { color: var(--ink-2); font-size: 12px; padding: 10px 2px; }
+
+@media (max-width: 640px) {
+  main { padding: 12px 10px 24px; }
+  .panel { padding: 10px; }
+  .callout { display: none; } /* phone width: the part list is the callout */
+  .panel-head { flex-wrap: wrap; }
+}

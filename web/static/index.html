@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SALVAGE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="bar">
+    <h1>SALVAGE</h1>
+    <span class="bar-sub">TEARDOWN AGENT — PROVE IT BEFORE YOU LABEL IT</span>
+  </header>
+
+  <main>
+    <section class="panel" id="panel-stage">
+      <div class="panel-head">
+        <h2>DEVICE</h2>
+        <div class="actions">
+          <label class="btn" id="upload-label">
+            UPLOAD PHOTO
+            <input type="file" id="file-input" accept="image/*">
+          </label>
+          <button class="btn" id="sample-btn" type="button">SAMPLE DEVICE</button>
+        </div>
+      </div>
+      <div class="viewer" id="viewer">
+        <span class="viewer-hint" id="viewer-hint">NO DEVICE LOADED — UPLOAD A PHOTO OR OPEN THE SAMPLE</span>
+        <img id="overlay-img" alt="scan overlay" hidden>
+        <svg id="label-svg" aria-hidden="true"></svg>
+      </div>
+      <p class="mode" id="mode-line"></p>
+    </section>
+
+    <section class="panel" id="panel-parts">
+      <div class="panel-head"><h2>PARTS</h2><span class="count" id="part-count"></span></div>
+      <ol class="parts" id="part-list"></ol>
+    </section>
+
+    <section class="panel" id="panel-search">
+      <div class="panel-head"><h2>REVERSE SEARCH</h2></div>
+      <form id="search-form">
+        <input id="search-input" type="text" autocomplete="off"
+               placeholder="I need a 12 V motor with a driver">
+        <button class="btn" type="submit">ASK</button>
+      </form>
+      <ol class="results" id="results"></ol>
+    </section>
+  </main>
+
+  <footer class="bar">
+    <span class="bar-sub">SAMPLE DEVICE WORKS WITH NO KEYS AND NO CAMERA</span>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

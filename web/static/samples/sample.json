@@ -1,0 +1,332 @@
+{
+  "device": {
+    "id": "sample_drone",
+    "name": "DEAD DRONE",
+    "source": "junk drawer",
+    "notes": "quad that stopped arming after a wet field day"
+  },
+  "note": "cached scan: precomputed offline, no keys, no camera. The motor verdict includes the bench measurement '8.2 ohms' already taken.",
+  "photo": "photo.png",
+  "overlay": "overlay.png",
+  "size": [
+    640,
+    480
+  ],
+  "measurement_note": "8.2 ohms across the two motor leads",
+  "parts": [
+    {
+      "id": "p_003",
+      "n": 1,
+      "bbox": [
+        38.0,
+        92.0,
+        193.0,
+        248.0
+      ],
+      "name": "BLDC 2205",
+      "label": "bldc_motor 2205 2300KV",
+      "state": "VERIFIED",
+      "reasons": [
+        "2 of 2 readers agree the part is 'bldc_motor' (agreement 1.00)",
+        "measurement '8.2 ohms across the two motor leads' parses to 8.2 (winding resistance); expected 0.5 to 20 ohms; it is in range"
+      ],
+      "requested_measurement": null
+    },
+    {
+      "id": "p_001",
+      "n": 2,
+      "bbox": [
+        230.0,
+        40.0,
+        370.0,
+        160.0
+      ],
+      "name": "FAN 4010",
+      "label": "cooling_fan 4010",
+      "state": "NEEDS_MEASUREMENT",
+      "reasons": [
+        "2 of 2 readers agree the part is 'cooling_fan' (agreement 1.00)",
+        "this type has a cheap check: spin test at rated voltage"
+      ],
+      "requested_measurement": "Power the fan at its rated voltage and watch the blades; I expect it to spin freely, no grind, no stall."
+    },
+    {
+      "id": "p_002",
+      "n": 3,
+      "bbox": [
+        480.0,
+        60.0,
+        560.0,
+        210.0
+      ],
+      "name": "CAP 470uF 25V",
+      "label": "unproven",
+      "state": "ABSTAIN",
+      "reasons": [
+        "1 of 2 readers agree the part is 'integrated_circuit' (agreement 0.50)",
+        "agreement is below 0.67: the readers do not agree on what this part is, so nothing can be verified"
+      ],
+      "requested_measurement": null
+    },
+    {
+      "id": "p_004",
+      "n": 4,
+      "bbox": [
+        400.0,
+        300.0,
+        600.0,
+        420.0
+      ],
+      "name": "HEATSINK",
+      "label": "heatsink",
+      "state": "VERIFIED",
+      "reasons": [
+        "2 of 2 readers agree the part is 'heatsink' (agreement 1.00)",
+        "this type needs no measurement to verify"
+      ],
+      "requested_measurement": null
+    },
+    {
+      "id": "p_005",
+      "n": 5,
+      "bbox": [
+        60.0,
+        320.0,
+        250.0,
+        450.0
+      ],
+      "name": "LIPO 3.7V CELL",
+      "label": "swollen or damaged lithium cell",
+      "state": "HAZARD",
+      "reasons": [
+        "refusing: swollen or damaged lithium cell (swollen)",
+        "instead: do not puncture, bend or short the cell and do not build a pack with it; put it straight into a sand bucket or fireproof bag and take it to a battery recycling drop-off"
+      ],
+      "requested_measurement": null
+    }
+  ],
+  "inventory_seed": {
+    "device": {
+      "id": "sample_drone",
+      "name": "DEAD DRONE",
+      "source": "junk drawer",
+      "notes": "quad that stopped arming after a wet field day"
+    },
+    "parts": [
+      {
+        "id": "p_001",
+        "device_id": "sample_drone",
+        "crop_path": "C:/Users/sehaj/AppData/Local/Temp/tmp108s4joo/crops/sample_drone/p_001.png",
+        "bbox": [
+          230.0,
+          40.0,
+          370.0,
+          160.0
+        ],
+        "mask_path": "C:/Users/sehaj/AppData/Local/Temp/tmp108s4joo/masks/sample_drone/p_001.png"
+      },
+      {
+        "id": "p_002",
+        "device_id": "sample_drone",
+        "crop_path": "C:/Users/sehaj/AppData/Local/Temp/tmp108s4joo/crops/sample_drone/p_002.png",
+        "bbox": [
+          480.0,
+          60.0,
+          560.0,
+          210.0
+        ],
+        "mask_path": "C:/Users/sehaj/AppData/Local/Temp/tmp108s4joo/masks/sample_drone/p_002.png"
+      },
+      {
+        "id": "p_003",
+        "device_id": "sample_drone",
+        "crop_path": "C:/Users/sehaj/AppData/Local/Temp/tmp108s4joo/crops/sample_drone/p_003.png",
+        "bbox": [
+          38.0,
+          92.0,
+          193.0,
+          248.0
+        ],
+        "mask_path": "C:/Users/sehaj/AppData/Local/Temp/tmp108s4joo/masks/sample_drone/p_003.png"
+      },
+      {
+        "id": "p_004",
+        "device_id": "sample_drone",
+        "crop_path": "C:/Users/sehaj/AppData/Local/Temp/tmp108s4joo/crops/sample_drone/p_004.png",
+        "bbox": [
+          400.0,
+          300.0,
+          600.0,
+          420.0
+        ],
+        "mask_path": "C:/Users/sehaj/AppData/Local/Temp/tmp108s4joo/masks/sample_drone/p_004.png"
+      },
+      {
+        "id": "p_005",
+        "device_id": "sample_drone",
+        "crop_path": "C:/Users/sehaj/AppData/Local/Temp/tmp108s4joo/crops/sample_drone/p_005.png",
+        "bbox": [
+          60.0,
+          320.0,
+          250.0,
+          450.0
+        ],
+        "mask_path": "C:/Users/sehaj/AppData/Local/Temp/tmp108s4joo/masks/sample_drone/p_005.png"
+      }
+    ],
+    "verdicts": [
+      {
+        "part_id": "p_003",
+        "state": "VERIFIED",
+        "label": "bldc_motor 2205 2300KV",
+        "reasons": [
+          "2 of 2 readers agree the part is 'bldc_motor' (agreement 1.00)",
+          "measurement '8.2 ohms across the two motor leads' parses to 8.2 (winding resistance); expected 0.5 to 20 ohms; it is in range"
+        ],
+        "requested_measurement": null
+      },
+      {
+        "part_id": "p_001",
+        "state": "NEEDS_MEASUREMENT",
+        "label": "cooling_fan 4010",
+        "reasons": [
+          "2 of 2 readers agree the part is 'cooling_fan' (agreement 1.00)",
+          "this type has a cheap check: spin test at rated voltage"
+        ],
+        "requested_measurement": "Power the fan at its rated voltage and watch the blades; I expect it to spin freely, no grind, no stall."
+      },
+      {
+        "part_id": "p_002",
+        "state": "ABSTAIN",
+        "label": "unproven",
+        "reasons": [
+          "1 of 2 readers agree the part is 'integrated_circuit' (agreement 0.50)",
+          "agreement is below 0.67: the readers do not agree on what this part is, so nothing can be verified"
+        ],
+        "requested_measurement": null
+      },
+      {
+        "part_id": "p_004",
+        "state": "VERIFIED",
+        "label": "heatsink",
+        "reasons": [
+          "2 of 2 readers agree the part is 'heatsink' (agreement 1.00)",
+          "this type needs no measurement to verify"
+        ],
+        "requested_measurement": null
+      },
+      {
+        "part_id": "p_005",
+        "state": "HAZARD",
+        "label": "swollen or damaged lithium cell",
+        "reasons": [
+          "refusing: swollen or damaged lithium cell (swollen)",
+          "instead: do not puncture, bend or short the cell and do not build a pack with it; put it straight into a sand bucket or fireproof bag and take it to a battery recycling drop-off"
+        ],
+        "requested_measurement": null
+      }
+    ],
+    "readings": [
+      {
+        "part_id": "p_003",
+        "model_id": "muse-spark-1.3",
+        "part_type": "bldc_motor",
+        "part_number": "2205 2300KV",
+        "key_rating": "2300KV, 12 V",
+        "condition": "unknown",
+        "confidence": 0.9,
+        "evidence": "bell marked '2205, 2300KV'; esc wires and the pwm driver cable leave the base"
+      },
+      {
+        "part_id": "p_003",
+        "model_id": "muse-spark-open",
+        "part_type": "bldc_motor",
+        "part_number": "2205 2300KV",
+        "key_rating": "2300KV, 12 V",
+        "condition": "unknown",
+        "confidence": 0.87,
+        "evidence": "same 2205 bell, 2300KV marking; three-phase esc leads, pwm driver on board"
+      },
+      {
+        "part_id": "p_001",
+        "model_id": "muse-spark-1.3",
+        "part_type": "cooling_fan",
+        "part_number": "4010",
+        "key_rating": "5 V 0.2 A",
+        "condition": "works",
+        "confidence": 0.82,
+        "evidence": "4010 frame marking reads cleanly; blades unbroken, hub intact"
+      },
+      {
+        "part_id": "p_001",
+        "model_id": "muse-spark-open",
+        "part_type": "cooling_fan",
+        "part_number": "4010",
+        "key_rating": "5 V 0.2 A",
+        "condition": "works",
+        "confidence": 0.82,
+        "evidence": "4010 brushless fan; bearings look sound, no cracking in the blades"
+      },
+      {
+        "part_id": "p_002",
+        "model_id": "muse-spark-1.3",
+        "part_type": "electrolytic_capacitor",
+        "part_number": null,
+        "key_rating": "470uF 25V",
+        "condition": "unknown",
+        "confidence": 0.82,
+        "evidence": "cylindrical can with a positive stripe, '470uF 25V' on the sleeve"
+      },
+      {
+        "part_id": "p_002",
+        "model_id": "muse-spark-open",
+        "part_type": "integrated_circuit",
+        "part_number": null,
+        "key_rating": null,
+        "condition": "unknown",
+        "confidence": 0.82,
+        "evidence": "black cylinder could be a coin cell holder; the marking is out of focus"
+      },
+      {
+        "part_id": "p_004",
+        "model_id": "muse-spark-1.3",
+        "part_type": "heatsink",
+        "part_number": null,
+        "key_rating": null,
+        "condition": "works",
+        "confidence": 0.82,
+        "evidence": "aluminum fins, no fusing or heat discoloration visible"
+      },
+      {
+        "part_id": "p_004",
+        "model_id": "muse-spark-open",
+        "part_type": "heatsink",
+        "part_number": null,
+        "key_rating": null,
+        "condition": "works",
+        "confidence": 0.82,
+        "evidence": "pressed-aluminum heatsink bolted over the driver, fins straight"
+      },
+      {
+        "part_id": "p_005",
+        "model_id": "muse-spark-1.3",
+        "part_type": "lipo_cell",
+        "part_number": null,
+        "key_rating": "3.7V",
+        "condition": "unknown",
+        "confidence": 0.82,
+        "evidence": "pouch is swollen and puffed along one edge"
+      },
+      {
+        "part_id": "p_005",
+        "model_id": "muse-spark-open",
+        "part_type": "lipo_cell",
+        "part_number": null,
+        "key_rating": "3.7V",
+        "condition": "unknown",
+        "confidence": 0.82,
+        "evidence": "single-cell pouch with '3.7V 150mAh'; wrappers intact"
+      }
+    ]
+  }
+}
