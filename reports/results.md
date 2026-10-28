@@ -1,3 +1,5 @@
+> **Not real results.** This report was generated from mock readers on a test label file to check that the evaluation harness works. No live models have been run yet.
+
 # Salvage eval results — split: dev
 
 26 labeled parts on 8 devices; labels `data/labels/parts.csv`; mock-reader seed 7; gate strictness swept over 1.00, 0.90, 0.80, 0.67.
