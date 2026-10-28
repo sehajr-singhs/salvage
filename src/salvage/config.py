@@ -84,7 +84,7 @@ PROVIDERS: list[Provider] = [
         name="anthropic",
         base_url="https://api.anthropic.com/v1",
         api_key_env="ANTHROPIC_API_KEY",
-        model_id="claude-sonnet-4-5",
+        model_id="claude-sonnet-5-5",
     ),
     Provider(
         name="groq",
