@@ -4,122 +4,292 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Salvage</title>
-<meta name="description" content="A teardown agent that finds the parts inside dead electronics and proves each one works before it labels it.">
+<meta name="description" content="A teardown agent that finds the parts inside dead electronics, proves each one works, and gives them back to the community.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Michroma&family=Doto:wght@700;900&family=Space+Mono:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#000; --fg:#fff; --mute:#8A8A8A; --line:#2A2A2A; --amber:#C8A24A; }
+  :root {
+    --bg:#000; --fg:#f2f2f2; --mute:#8a8a8a; --dim:#4a4a4a; --line:#222;
+    --red:#d71921; --amber:#c8a24a;
+    --wide:"Michroma",system-ui,sans-serif; --dot:"Doto",monospace;
+    --mono:"Space Mono",ui-monospace,Menlo,monospace; --sans:"Inter",system-ui,sans-serif;
+  }
   * { box-sizing:border-box; }
-  html { background:var(--bg); }
-  body { margin:0; background:var(--bg); color:var(--fg); font-family:"Inter Tight",system-ui,sans-serif; line-height:1.55;
-         background-image:radial-gradient(#1a1a1a 1px, transparent 1px); background-size:8px 8px; }
-  a { color:var(--fg); }
-  .wrap { max-width:1080px; margin:0 auto; padding:0 24px; }
-  header { border-bottom:1px solid var(--line); }
-  header .wrap { display:flex; justify-content:space-between; align-items:center; height:64px; }
-  .logo { font-weight:800; letter-spacing:.32em; font-size:18px; }
-  nav a { color:var(--mute); text-decoration:none; font-family:"JetBrains Mono",monospace; font-size:12px; letter-spacing:.12em; margin-left:22px; text-transform:uppercase; }
+  html { background:var(--bg); scroll-behavior:smooth; }
+  body { margin:0; background:var(--bg); color:var(--fg); font-family:var(--sans); line-height:1.6; font-size:16px; overflow-x:hidden; }
+  a { color:inherit; }
+  .wrap { max-width:1180px; margin:0 auto; padding:0 24px; }
+
+  header { position:sticky; top:0; z-index:10; background:rgba(0,0,0,.86); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+  header .wrap { display:flex; align-items:center; justify-content:space-between; height:68px; gap:20px; }
+  .brand { display:flex; align-items:center; gap:22px; min-width:0; }
+  .built { font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); line-height:1.35; white-space:nowrap; }
+  .built b { color:var(--mute); font-weight:400; }
+  .sep { width:1px; height:28px; background:var(--line); }
+  .logo { font-family:var(--wide); font-size:19px; letter-spacing:.42em; text-transform:uppercase; white-space:nowrap; }
+  nav { display:flex; gap:26px; }
+  nav a { font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--mute); text-decoration:none; }
   nav a:hover { color:var(--fg); }
-  .hero { padding:110px 0 70px; border-bottom:1px solid var(--line); }
-  .eyebrow { font-family:"JetBrains Mono",monospace; font-size:12px; letter-spacing:.2em; color:var(--mute); text-transform:uppercase; }
-  h1 { font-size:clamp(40px,7vw,84px); line-height:1.02; margin:18px 0 24px; font-weight:800; letter-spacing:-.02em; text-transform:uppercase; }
-  .lede { font-size:20px; color:#d6d6d6; max-width:720px; }
-  .cta { margin-top:34px; display:flex; gap:14px; flex-wrap:wrap; }
-  .btn { font-family:"JetBrains Mono",monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; padding:13px 20px; border:1px solid var(--fg); text-decoration:none; }
+
+  .hero { padding:96px 0 88px; border-bottom:1px solid var(--line);
+          background-image:radial-gradient(#1c1c1c 1.2px, transparent 1.2px); background-size:14px 14px; }
+  .tag { font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--mute); display:flex; align-items:center; gap:10px; }
+  .rec { width:8px; height:8px; border-radius:50%; background:var(--red); display:inline-block; animation:blink 1.6s steps(1) infinite; }
+  @keyframes blink { 50% { opacity:.15; } }
+  h1 { font-family:var(--wide); font-weight:400; text-transform:uppercase; font-size:clamp(30px,5.6vw,68px); line-height:1.12; letter-spacing:.04em; margin:26px 0; max-width:980px; }
+  .lede { font-size:19px; color:#c9c9c9; max-width:690px; margin:0; }
+  .cta { display:flex; gap:12px; flex-wrap:wrap; margin-top:36px; }
+  .btn { font-family:var(--mono); font-size:12px; letter-spacing:.16em; text-transform:uppercase; padding:14px 22px; border:1px solid var(--fg); text-decoration:none; }
   .btn.solid { background:var(--fg); color:#000; }
-  section { padding:80px 0; border-bottom:1px solid var(--line); }
-  h2 { font-size:13px; font-family:"JetBrains Mono",monospace; letter-spacing:.22em; text-transform:uppercase; color:var(--mute); margin:0 0 14px; font-weight:500; }
-  h3 { font-size:clamp(26px,3.6vw,40px); margin:0 0 22px; font-weight:700; letter-spacing:-.01em; max-width:820px; line-height:1.15; }
-  p { color:#cfcfcf; max-width:760px; }
-  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:30px; }
-  .cell { background:#000; padding:26px; }
-  .cell .k { font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.18em; color:var(--mute); text-transform:uppercase; }
-  .cell .t { font-size:20px; font-weight:700; margin:10px 0 8px; }
-  .cell p { font-size:15px; margin:0; color:#bdbdbd; }
-  .shot { margin-top:34px; border:1px solid var(--line); width:100%; display:block; }
-  .flow { font-family:"JetBrains Mono",monospace; font-size:13px; color:#d6d6d6; border:1px solid var(--line); padding:26px; overflow-x:auto; white-space:pre; line-height:1.7; margin-top:26px; }
-  .states { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin-top:28px; }
-  .state { border:1px solid var(--line); padding:20px; }
-  .state b { font-family:"JetBrains Mono",monospace; letter-spacing:.12em; font-size:13px; }
-  .state.haz { border-color:var(--amber); } .state.haz b { color:var(--amber); }
-  .state p { font-size:15px; margin:8px 0 0; }
-  ul.plain { padding-left:18px; color:#cfcfcf; max-width:760px; } ul.plain li { margin-bottom:10px; }
-  code { font-family:"JetBrains Mono",monospace; font-size:.92em; background:#111; border:1px solid var(--line); padding:1px 6px; }
-  footer { padding:40px 0 60px; color:var(--mute); font-family:"JetBrains Mono",monospace; font-size:12px; letter-spacing:.08em; }
-  @media (max-width:640px) { nav { display:none; } .hero { padding:70px 0 50px; } section { padding:56px 0; } }
+  .btn:hover { background:var(--red); border-color:var(--red); color:#fff; }
+
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); border-bottom:1px solid var(--line); }
+  .stat { padding:30px 24px; border-right:1px solid var(--line); }
+  .stat:last-child { border-right:0; }
+  .stat .n { font-family:var(--dot); font-weight:900; font-size:54px; line-height:1; }
+  .stat .k { font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--mute); margin-top:10px; }
+
+  section { padding:92px 0; border-bottom:1px solid var(--line); }
+  .num { font-family:var(--mono); font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--mute); }
+  .num::before { content:""; display:inline-block; width:7px; height:7px; background:var(--red); border-radius:50%; margin-right:10px; vertical-align:1px; }
+  h2 { font-family:var(--wide); font-weight:400; text-transform:uppercase; letter-spacing:.03em; font-size:clamp(22px,3.1vw,36px); line-height:1.25; margin:16px 0 22px; max-width:900px; }
+  p { color:#c4c4c4; max-width:760px; }
+
+  /* target frame: corner brackets, like a detection box */
+  .target { position:relative; padding:24px; margin-top:36px; }
+  .target::before, .target::after, .target > .c1, .target > .c2 { content:""; position:absolute; width:22px; height:22px; border-color:var(--fg); border-style:solid; }
+  .target::before { top:0; left:0; border-width:1px 0 0 1px; }
+  .target::after { top:0; right:0; border-width:1px 1px 0 0; }
+  .target > .c1 { bottom:0; left:0; border-width:0 0 1px 1px; }
+  .target > .c2 { bottom:0; right:0; border-width:0 1px 1px 0; }
+  .target .lbl { position:absolute; top:-9px; left:36px; background:var(--bg); padding:0 10px; font-family:var(--mono); font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--mute); }
+  .target img { width:100%; display:block; border:1px solid var(--line); }
+
+  pre.ascii { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:12.5px; line-height:1.5; color:#d8d8d8; margin:0; overflow-x:auto; white-space:pre; }
+  pre.ascii .r { color:var(--red); } pre.ascii .a { color:var(--amber); } pre.ascii .m { color:var(--mute); } pre.ascii .w { color:#fff; }
+
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:36px; }
+  .cell { background:var(--bg); padding:26px; }
+  .cell .k { font-family:var(--mono); font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--mute); }
+  .cell .t { font-family:var(--wide); text-transform:uppercase; font-size:14px; letter-spacing:.06em; margin:12px 0 10px; line-height:1.5; }
+  .cell p { font-size:14.5px; margin:0; color:#b4b4b4; }
+
+  .states { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:36px; }
+  .st { background:var(--bg); padding:24px; }
+  .st .o { font-family:var(--dot); font-weight:900; font-size:40px; line-height:1; color:var(--dim); }
+  .st b { display:block; font-family:var(--mono); font-weight:700; letter-spacing:.12em; font-size:13px; margin:14px 0 8px; }
+  .st p { font-size:14px; margin:0; color:#b4b4b4; }
+  .st.haz b, .st.haz .o { color:var(--amber); }
+  .st.ver b { color:#fff; } .st.ver .o { color:var(--fg); }
+
+  .phases { margin-top:36px; border-top:1px solid var(--line); }
+  .ph { display:grid; grid-template-columns:120px 1fr 150px; gap:24px; padding:26px 0; border-bottom:1px solid var(--line); align-items:start; }
+  .ph .when { font-family:var(--dot); font-weight:900; font-size:30px; line-height:1; }
+  .ph h3 { font-family:var(--wide); font-weight:400; text-transform:uppercase; font-size:14px; letter-spacing:.06em; margin:0 0 8px; }
+  .ph p { margin:0; font-size:15px; }
+  .ph .s { font-family:var(--mono); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--mute); text-align:right; }
+  .ph .s.on { color:var(--fg); } .ph .s.on::before { content:"\25CF  "; color:var(--red); }
+
+  ul.plain { padding-left:18px; color:#c4c4c4; max-width:780px; } ul.plain li { margin-bottom:10px; }
+  code { font-family:var(--mono); font-size:.88em; background:#0f0f0f; border:1px solid var(--line); padding:1px 6px; }
+  footer { padding:44px 0 64px; font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); }
+  footer .wrap { display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+
+  @media (max-width:860px) {
+    nav { display:none; }
+    .states { grid-template-columns:1fr 1fr; }
+    .stats { grid-template-columns:1fr 1fr; } .stat:nth-child(2) { border-right:0; } .stat:nth-child(-n+2) { border-bottom:1px solid var(--line); }
+    .ph { grid-template-columns:1fr; gap:8px; } .ph .s { text-align:left; }
+  }
+  @media (max-width:560px) {
+    .wrap { padding:0 16px; }
+    .built, .sep { display:none; }
+    .hero { padding:64px 0 60px; } section { padding:60px 0; }
+    .states { grid-template-columns:1fr; }
+    .stat .n { font-size:42px; }
+    .target { padding:18px 12px; }
+    pre.ascii { font-size:10.5px; }
+  }
 </style>
 </head>
 <body>
-<header><div class="wrap"><div class="logo">SALVAGE</div>
-<nav><a href="#why">Why</a><a href="#system">System</a><a href="#gate">Gate</a><a href="#decisions">Decisions</a><a href="#status">Status</a></nav></div></header>
+
+<header><div class="wrap">
+  <div class="brand">
+    <div class="logo">Salvage</div>
+    <div class="sep"></div>
+    <div class="built">Built on <b>Meta</b> open models<br>SAM 3.1 · Muse Spark · Muse Glimmer</div>
+  </div>
+  <nav><a href="#system">System</a><a href="#classify">Classify</a><a href="#loop">Loop</a><a href="#roadmap">Roadmap</a><a href="#status">Status</a></nav>
+</div></header>
 
 <div class="hero"><div class="wrap">
-  <div class="eyebrow">Teardown agent · Prove it before you label it</div>
+  <div class="tag"><span class="rec"></span>Teardown agent · Prove it before you label it</div>
   <h1>Every dead device is a parts bin.</h1>
-  <p class="lede">Salvage looks inside broken electronics, works out which parts are still good, and refuses to call a part good until the evidence says so. When it isn't sure, it asks for one cheap measurement instead of guessing.</p>
-  <div class="cta"><a class="btn solid" href="https://github.com/sehajr-singhs/salvage">View the code</a><a class="btn" href="#system">How it works</a></div>
+  <p class="lede">Salvage looks inside broken electronics, works out which parts still work, and won't call a part good until the evidence says so. Parts that pass go back into the community for free. Everything else is marked unknown or unsafe, out loud.</p>
+  <div class="cta"><a class="btn solid" href="https://github.com/sehajr-singhs/salvage">View the code</a><a class="btn" href="#system">The architecture</a></div>
 </div></div>
 
+<div class="stats wrap" style="padding:0">
+  <div class="stat"><div class="n">04</div><div class="k">Gate states</div></div>
+  <div class="stat"><div class="n">03+</div><div class="k">Independent readers</div></div>
+  <div class="stat"><div class="n">05</div><div class="k">Meter checks</div></div>
+  <div class="stat"><div class="n">232</div><div class="k">Tests passing</div></div>
+</div>
+
 <section id="why"><div class="wrap">
-  <h2>01 · Why</h2>
-  <h3>A model that's confidently wrong about a part is worse than no model.</h3>
-  <p>I build things out of dead electronics. A drone with a cracked frame still has four good motors, an ESC, a camera and a battery, but you only find that out after an hour with a multimeter. Vision models can name parts from a photo now, and they're usually right. "Usually" is the problem. If a model calls a dead motor good, you wire it into your next build and lose an afternoon. If it calls a swollen lithium cell good, someone gets hurt.</p>
-  <p>So Salvage is built around one rule: a label has to be earned. Several models have to agree, the agreement has to survive plain-code checks, and anything that can be settled with a meter gets measured. Everything else is marked as unknown, out loud.</p>
+  <div class="num">01 · Why</div>
+  <h2>A model that's confidently wrong about a part is worse than no model.</h2>
+  <p>A drone with a cracked frame still has four good motors, an ESC, a camera and a battery. You only find that out after an hour with a multimeter. Vision models can name parts from a photo now, and they're usually right. "Usually" is the problem. Call a dead motor good and someone loses an afternoon. Call a swollen lithium cell good and someone gets hurt.</p>
+  <p>So Salvage runs on one rule: a label has to be earned. Several models have to agree, the agreement has to survive plain-code checks, and anything a meter can settle gets measured.</p>
+  <div class="target"><span class="c1"></span><span class="c2"></span><span class="lbl">Live UI · sample device</span>
+    <img src="ui.png" alt="Salvage web interface showing a sample device with five outlined parts and their verdicts">
+  </div>
 </div></section>
 
 <section id="system"><div class="wrap">
-  <h2>02 · System</h2>
-  <h3>Eyes, several independent readers, a gate written in plain code, and a bench that remembers.</h3>
-  <div class="flow">photo
-  └─▶ SEGMENT     SAM 3.1 masks every part, crops each one with 10% padding
-        └─▶ READ        each crop goes to several models in parallel, structured JSON back
-              └─▶ GATE        deterministic rules: HAZARD → ABSTAIN → NEEDS_MEASUREMENT → VERIFIED
-                    ├─▶ MEASURE     ask for one cheap reading ("motor winding: 0.5 to 20 ohms"), re-gate
-                    └─▶ INVENTORY   verified parts go on the shelf, searchable later ("12 V motor with driver")</div>
+  <div class="num">02 · System</div>
+  <h2>The whole pipeline, and where the open model plugs in.</h2>
+  <p>Every box below is a folder in the repo. Every model sits behind one provider config, so swapping a hosted model for open weights on your own GPU is a one-line change. Nothing after the readers is a model.</p>
+  <div class="target"><span class="c1"></span><span class="c2"></span><span class="lbl">Architecture · src/salvage</span>
+<pre class="ascii">
+<span class="w"> PHOTO</span> -- phone / bench camera
+   |
+   v
++----------------------------------------------------------------------------------+
+| <span class="w">SEGMENT </span>  segment/   SAM 3.1, text prompts ("electrolytic capacitor")            |
+|           masks &gt; crops (10% pad) &gt; one crop per part                            |
++----------------------------------------------------------------------------------+
+   |  N crops
+   v
++--------------------------- READ  readers/  (parallel) ---------------------------+
+|                                                                                  |
+| +----------------+  +--------------------+  +----------------+  +------------+   |
+| | Muse Spark     |  | <span class="r">Muse Spark Open</span>    |  | <span class="r">Muse Glimmer</span>   |  | non-Meta   |   |
+| | Meta API       |  | <span class="r">OPEN WEIGHTS</span>       |  | <span class="r">OPEN WEIGHTS</span>   |  | model      |   |
+| | (hosted)       |  | your GPU/Baseten   |  | Fireworks      |  | (other     |   |
+| |                |  | <span class="r">&lt; plugs in here</span>    |  |                |  | family)    |   |
+| +--------+-------+  +----------+---------+  +--------+-------+  +------+-----+   |
+|          +--------------- same prompt, same JSON schema ---------------+         |
+|                                                                                  |
+| each returns: part type · markings · rating · condition · evidence               |
+| <span class="m">config.py: one Provider per backend, keys from .env, every call cached</span>           |
+| <span class="m">a provider that times out loses its vote; the run keeps going</span>                    |
++----------------------------------------------------------------------------------+
+   |  votes + agreement
+   v
++----------------------------------------------------------------------------------+
+| <span class="w">GATE   </span>gate/   plain Python, no model, deterministic, tested line by line        |
+|   HAZARD &gt; ABSTAIN &gt; NEEDS_MEASUREMENT &gt; VERIFIED   (strict order)               |
++----------------------------------------------------------------------------------+
+   |                                   |
+   | NEEDS_MEASUREMENT                 | VERIFIED
+   v                                   v
++-------------------------------+     +--------------------------------------------+
+| <span class="w">MEASURE </span> measure/             |     | <span class="w">INVENTORY </span> inventory/  SQLite              |
+| "motor winding: 0.5–20 Ω"     |     | ratings + evidence + photo crop            |
+| you read the meter            | --&gt; | reverse search: "12 V motor with driver"   |
+| value goes back to the <span class="w">GATE   </span>|     | hazards and unknowns are never returned    |
++-------------------------------+     +--------------------------------------------+
+                                                             |
+                                                             v
+                                                         GIVE -- listed free, see 04
+</pre>
+  </div>
   <div class="grid">
-    <div class="cell"><div class="k">Eyes</div><div class="t">SAM 3.1</div><p>Meta's segmentation model finds and outlines every part from text prompts like "electrolytic capacitor". Runs through the Meta Model API, or the open weights on a GPU.</p></div>
-    <div class="cell"><div class="k">Readers</div><div class="t">Muse Spark · Muse Spark Open · Muse Glimmer · a non-Meta model</div><p>Each reader names the part, reads its markings, rates its condition and quotes the evidence it actually sees. Mixing model families means their mistakes don't line up.</p></div>
-    <div class="cell"><div class="k">Gate</div><div class="t">Plain code, no model</div><p>Decides the final state from the readers' votes, hazard rules, consistency checks and any measurement. It's deterministic and testable line by line.</p></div>
-    <div class="cell"><div class="k">Bench</div><div class="t">Inventory + reverse search</div><p>Verified parts are stored with their ratings. Ask for what you need and it searches your own shelf first, and never returns a hazard or an unknown part.</p></div>
+    <div class="cell"><div class="k">Eyes</div><div class="t">SAM 3.1</div><p>Finds and outlines every part from text prompts. Runs through the Meta API, or the open weights on a GPU.</p></div>
+    <div class="cell"><div class="k">Readers</div><div class="t">Several model families</div><p>Each reader names the part, reads markings and quotes the evidence it sees. Different families make different mistakes, so their errors don't line up.</p></div>
+    <div class="cell"><div class="k">Open weights</div><div class="t">Swap in, one line</div><p>Muse Spark Open and Muse Glimmer run on your own hardware or partner inference through the same OpenAI-compatible interface. Nothing downstream changes.</p></div>
+    <div class="cell"><div class="k">Gate</div><div class="t">Plain code</div><p>A rule table decides the final state. A model can talk itself into an answer. A rule table can't.</p></div>
   </div>
-  <img class="shot" src="ui.png" alt="Salvage web interface showing a sample device with five outlined parts and their verdicts">
 </div></section>
 
-<section id="gate"><div class="wrap">
-  <h2>03 · The gate</h2>
-  <h3>Four states. A part only gets the good one by earning it.</h3>
+<section id="classify"><div class="wrap">
+  <div class="num">03 · How it classifies</div>
+  <h2>Four states, checked in order. A part only gets the good one by earning it.</h2>
   <div class="states">
-    <div class="state haz"><b>HAZARD</b><p>Swollen lithium cells, CRT and flyback circuits, microwave high-voltage parts, mains primary sides. Checked first, wins over everything, and the verdict says what to do instead.</p></div>
-    <div class="state"><b>ABSTAIN</b><p>Fewer than two readers, agreement below two thirds, readers contradicting each other on whether it works, or a marking that doesn't fit the part family. It says "I don't know."</p></div>
-    <div class="state"><b>NEEDS_MEASUREMENT</b><p>The readers agree, but a cheap check would settle it: motor winding resistance, cell voltage, fan spin, fuse continuity, capacitor ESR. It tells you exactly what to measure and the range to expect.</p></div>
-    <div class="state"><b>VERIFIED</b><p>The readers agree, and either the measurement landed in range or the part doesn't need one.</p></div>
+    <div class="st haz"><div class="o">01</div><b>HAZARD</b><p>Swollen lithium cells, CRT and flyback circuits, microwave high voltage, mains primaries. Checked first. Wins over everything.</p></div>
+    <div class="st"><div class="o">02</div><b>ABSTAIN</b><p>Fewer than two readers, agreement under two thirds, readers contradicting each other, or a marking that doesn't fit the part family.</p></div>
+    <div class="st"><div class="o">03</div><b>NEEDS_MEASUREMENT</b><p>The readers agree, but a ten-second meter check would settle it. It tells you what to measure and the range to expect.</p></div>
+    <div class="st ver"><div class="o">04</div><b>VERIFIED</b><p>The readers agree, and the measurement landed in range or the part doesn't need one.</p></div>
+  </div>
+  <div class="target"><span class="c1"></span><span class="c2"></span><span class="lbl">Worked example · one part through the gate (illustrative)</span>
+<pre class="ascii">
+ PART  dev01-p02   crop 212×188 px
+
+ READER            TYPE           MARKINGS        CONDITION   EVIDENCE
+ muse-spark        brushed motor  "RF-300 12V"    good        clean commutator, no burn marks
+ muse-spark-open   brushed motor  "RF-300"        good        intact leads, shaft centered
+ muse-glimmer      brushed motor  "RF-300 12V"    good        no discoloration on can
+ non-meta          brushed motor  none read       unsure      label partly hidden
+
+ GATE
+   1 <span class="a">hazard rules</span>          no match                                -> continue
+   2 agreement             type 4/4, condition 3/4 = 0.75 >= 0.67  -> continue
+     consistency           "12V" fits the motor family            -> continue
+   3 meter check exists    motor winding resistance               -> <span class="w">NEEDS_MEASUREMENT</span>
+                           <span class="m">"set meter to Ω, probe both leads, expect 0.5 to 20 Ω"</span>
+     you read              3.1 Ω                                  -> in range
+   4                                                              -> <span class="r">VERIFIED</span>
+
+ INVENTORY  +1  brushed DC motor · 12 V · RF-300 · winding 3.1 Ω · from dev01
+</pre>
   </div>
 </div></section>
 
-<section id="decisions"><div class="wrap">
-  <h2>04 · Why this architecture</h2>
-  <h3>Every choice trades a little coverage for a lot of trust.</h3>
-  <ul class="plain">
-    <li><b>Disagreement is a signal, not noise.</b> One model's confidence score says little about whether it's right. Independent models disagreeing about a part is a much better warning sign, so the readers vote and the gate counts.</li>
-    <li><b>The final call is plain code, not another model.</b> A model can talk itself into an answer. A rule table can't, and every decision can be traced to a line and tested.</li>
-    <li><b>Measurement beats more inference.</b> When a part is uncertain, one ten-second meter reading settles it better than asking a bigger model. The system is built to ask for that reading.</li>
-    <li><b>Hazards are checked before anything else.</b> Being cautious is cheap. Being wrong about a lithium cell isn't.</li>
-    <li><b>Abstaining is a valid answer.</b> The evaluation measures how much a confident wrong label costs, not just accuracy, so "I don't know" is never punished.</li>
-    <li><b>Every model call is cached and every network call can fail safely.</b> Re-running the same photo costs nothing, and a provider timing out removes one vote instead of crashing the run.</li>
-  </ul>
+<section id="loop"><div class="wrap">
+  <div class="num">04 · The loop</div>
+  <h2>Give, don't sell. Verified parts go back to people who'll build with them.</h2>
+  <p>The Buy Nothing idea is simple: neighbors give things away instead of throwing them out. Electronics are where that breaks down, because nobody wants a "probably works" motor from a stranger. A verified label fixes that. If Salvage has proved a part works, it's worth giving, and it's worth taking.</p>
+  <div class="target"><span class="c1"></span><span class="c2"></span><span class="lbl">The circular loop</span>
+<pre class="ascii">
++------------------+    +------------------+    +------------------+    +------------------+
+| <span class="w">DROP OFF</span>         | -&gt; | <span class="w">TEARDOWN</span>         | -&gt; | <span class="w">SALVAGE GATE</span>     | -&gt; | <span class="w">GIVE </span>            |
+| a dead drone     |    | bench or         |    | HAZARD/ABSTAIN   |    | free listing     |
+| a laptop         |    | robot cell       |    | MEASURE/VERIFY   |    | with proof       |
+| a toy            |    |                  |    |                  |    | of each part     |
++------------------+    +------------------+    +--------+---------+    +--------+---------+
+         ^                                               |                       |
+         |                                               +&gt; <span class="a">HAZARD: recycler</span>     |
+         |                                                  <span class="m">ABSTAIN: recovery</span>    |
+         |                                                                       v
++--------+---------------------------------------------------------------------------------+
+| <span class="w">FAILURE DATA</span>  which parts died, in which devices, after how long                         |
+| the record of what lasts goes back to whoever designs the next one                       |
++------------------------------------------------------------------------------------------+
+</pre>
+  </div>
+  <div class="grid">
+    <div class="cell"><div class="k">People</div><div class="t">Free parts, with proof</div><p>Makers, robotics teams and schools get motors, fans, cells and boards that a gate has signed off on, not a mystery bag.</p></div>
+    <div class="cell"><div class="k">Safety</div><div class="t">Hazards never ship</div><p>Swollen cells and high-voltage parts go to a certified recycler, never to a person.</p></div>
+    <div class="cell"><div class="k">Data</div><div class="t">What actually fails</div><p>Every verdict is a data point on which component died first. At scale, that's a reliability map nobody else has.</p></div>
+  </div>
+</div></section>
+
+<section id="roadmap"><div class="wrap">
+  <div class="num">05 · How it gets built</div>
+  <h2>One bench, then one neighborhood, then a warehouse.</h2>
+  <div class="phases">
+    <div class="ph"><div class="when">P0</div><div><h3>The bench tool</h3><p>Segment, read, gate, measure, inventory. A web UI and a CLI. Runs offline against mocks and cached answers.</p></div><div class="s on">Built</div></div>
+    <div class="ph"><div class="when">P1</div><div><h3>Live models, real devices</h3><p>Connect the providers, tear down real dead devices, hand-label every part, and publish coverage versus error: how many parts it labels, and how often a label is wrong.</p></div><div class="s">Next</div></div>
+    <div class="ph"><div class="when">P2</div><div><h3>Hands in the device</h3><p>Voice input so you can read the meter out loud, and a foreman model that plans the teardown step by step instead of a fixed pipeline.</p></div><div class="s">Planned</div></div>
+    <div class="ph"><div class="when">P3</div><div><h3>A neighborhood drop-off</h3><p>One school or makerspace bin. Dead devices in, verified parts listed free, hazards to a recycler. Measure how many parts actually get reused.</p></div><div class="s">Planned</div></div>
+    <div class="ph"><div class="when">P4</div><div><h3>Robot teardown cell</h3><p>A robot arm does the disassembly and the same gate decides. The gate doesn't change, only the hands do.</p></div><div class="s">Later</div></div>
+    <div class="ph"><div class="when">P5</div><div><h3>The reliability record</h3><p>Failure data across thousands of devices, shared with the people who design the next ones so they last longer.</p></div><div class="s">Later</div></div>
+  </div>
 </div></section>
 
 <section id="status"><div class="wrap">
-  <h2>05 · Status</h2>
-  <h3>Built end to end and tested offline. Live model runs are next.</h3>
+  <div class="num">06 · Status</div>
+  <h2>Built end to end and tested offline. Live model runs are next.</h2>
   <ul class="plain">
-    <li><b>Done:</b> segmentation, multi-model readers with an agreement signal, the gate, the measurement dialogue, the inventory with reverse search, a command line, the web interface and an evaluation harness. 232 tests pass.</li>
-    <li><b>Not yet:</b> every model call has only run against mocks and cached answers so far, because no API keys are connected. The provider settings follow Meta's published API, but the model IDs still need to be confirmed against the live model list.</li>
-    <li><b>Next:</b> real runs on dead devices, a hand-labeled set of parts to score coverage against error, voice input so your hands can stay inside the device, and a foreman model that plans the teardown instead of a fixed pipeline.</li>
+    <li>Done: segmentation, multi-model readers with an agreement signal, the gate, the measurement dialogue, the inventory with reverse search, a CLI, the web UI and an evaluation harness. 232 tests pass.</li>
+    <li>Not yet: every model call has only run against mocks and cached answers, because no API keys are connected. The model IDs in the config still need checking against the providers' live model lists. There are no real accuracy numbers yet, and this page doesn't claim any.</li>
   </ul>
-  <p>Try it locally: <code>pip install -e .</code> then <code>python -m uvicorn salvage.web.app:get_app --factory</code> and press "Sample device".</p>
+  <p>Run it: <code>pip install -e .</code> then <code>python -m uvicorn salvage.web.app:get_app --factory</code> and press "Sample device".</p>
 </div></section>
 
-<footer><div class="wrap">SALVAGE · Built by Sehaj Singh · <a href="https://github.com/sehajr-singhs/salvage">github.com/sehajr-singhs/salvage</a></div></footer>
+<footer><div class="wrap"><span>Salvage · Built by Sehaj Singh</span><a href="https://github.com/sehajr-singhs/salvage">github.com/sehajr-singhs/salvage</a></div></footer>
 </body>
 </html>
